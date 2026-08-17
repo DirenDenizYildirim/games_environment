@@ -1,0 +1,24 @@
+{
+  "_comment": "SHA-256 prefixes of the unified diff between the two environments, for files that are meant to differ. A changed hash means one copy moved: re-read the diff, then re-record it with `python3 tools/protocol-drift.py --update`.",
+  "pair": [
+    "Games_env",
+    "Robotics_env"
+  ],
+  "diffs": {
+    ".claude/agents/lit-sweeper.md": "d8cb9749ff39066a",
+    ".claude/skills/litsweep/SKILL.md": "e33d2b8c43c03130",
+    ".claude/skills/redteam/SKILL.md": "f038cf44c09d88ce",
+    ".claude/skills/session-start/SKILL.md": "3dfb817815b6c6d5",
+    ".claude/skills/tier-check/SKILL.md": "9922919207436ef2",
+    ".claude/workflows/doc-audit.js": "f3dc4b3f6a878b93",
+    ".claude/workflows/litsweep.js": "abfe1c8609d4ae49",
+    ".claude/workflows/redteam.js": "2e08a1ff71c09967",
+    ".gitignore": "50da19bf33731753",
+    "CLAUDE.md": "b2c3ef8a6ddaf8de",
+    "README.md": "1f0c6ae4b3fde0ba",
+    "docs/FAILURE-MODES.md": "1037f03fcc34f653",
+    "docs/PORTFOLIO.md": "a53c969180a475f9",
+    "docs/PROTOCOL.md": "1ff417ecd21801eb",
+    "docs/SEARCH-PROTOCOL.md": "68e58272eeca4a5f"
+  }
+}

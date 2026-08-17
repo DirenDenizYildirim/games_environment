@@ -108,8 +108,8 @@ const common = [
   `Ledger: \`~/MainIdeas/Supporting_Docs/DECISIONS_LEDGER.md\``,
   ``,
   `Read \`docs/FAILURE-MODES.md\` F-9 first. Size is not the drift signal: CanvasControl.md is`,
-  `1920 lines and did not drift; APC reached 805 and drifted badly. A document that keeps`,
-  `saying why it exists does not drift; one that only says what it now is, does.`,
+  `1920 lines and did not drift; APC drifted badly at 805 lines and is 826 today. A document`,
+  `that keeps saying why it exists does not drift; one that only says what it now is, does.`,
   ``,
   `Report findings only. Do not edit the document — it is Tier 3 and a hook blocks writes to it.`,
 ].join('\n')

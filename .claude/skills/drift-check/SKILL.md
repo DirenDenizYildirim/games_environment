@@ -9,8 +9,8 @@ Tests `FAILURE-MODES.md` **F-9**: a document answers a question nobody asked it,
 answer becomes load-bearing without ever being visible as a choice.
 
 **Size is not the signal.** `CanvasControl.md` is 1920 lines and did not drift.
-`Anisotropic Protective Coverage` reached 805 and drifted badly. The difference is that
-CanvasControl's §1.2 keeps re-stating the two questions the project started from.
+`Anisotropic Protective Coverage` drifted badly at 805 lines and is 826 today. The difference
+is that CanvasControl's §1.2 keeps re-stating the two questions the project started from.
 
 > **A document that keeps saying why it exists does not drift. One that only says what it now
 > is, does.**

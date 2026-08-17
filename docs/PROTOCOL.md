@@ -343,10 +343,11 @@ Four rules, all of them load-bearing:
    recommendations and invented parameters get logged instead of adopted.
 
 **Why this rule exists.** The APC theory document grew from an eleven-line seed to 805 lines
-and a fourteen-month hardware programme, and had silently adopted aerial drones — a platform
-contradicting its own §12. It surfaced only through an unrelated export-control check. He
-named it *"the curse of AI writing my theory doc."* The ledger is the mechanism that stops
-it recurring: choices become visible and unmarked, rather than invisible and settled.
+(826 today) and a fourteen-month hardware programme, and had silently adopted aerial drones —
+a platform contradicting its own §12. It surfaced only through an unrelated export-control
+check. He named it *"the curse of AI writing my theory doc."* The ledger is the mechanism
+that stops it recurring: choices become visible and unmarked, rather than invisible and
+settled.
 
 **Size is not the drift signal.** `CanvasControl.md` is more than twice APC's length and did
 not drift, because its §1.2 keeps re-stating the two questions the project started from. A

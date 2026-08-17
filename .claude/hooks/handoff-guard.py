@@ -4,9 +4,25 @@
 CLAUDE.md §6: never end a session without writing the project's HANDOFF.md.
 PROTOCOL.md §2.3 step 1.
 
-Fires only when a project directory contains a file modified more recently than
-that project's own HANDOFF.md — i.e. work happened and was not recorded. A
-read-only session changes nothing and this hook stays silent.
+Fires when a project directory contains a **work** file that was modified during this
+session and is newer than that project's own HANDOFF.md — i.e. work happened and was
+not recorded. A read-only session changes nothing and this hook stays silent.
+
+Two things deliberately do not count as work:
+
+  1. **The session-end ritual documents themselves.** PROTOCOL.md §2.3 writes HANDOFF.md
+     first (step 1) and DIARY / DECISIONS / RISKS / ASSUMPTIONS after it (steps 2-5), and
+     step 4 puts a dated line in RISKS.md every session even when nothing changed. Counting
+     those as work made the prescribed order guarantee a false positive on exactly the
+     sessions that had followed the protocol, which trains you to ignore the hook.
+
+  2. **Anything not touched since this session started.** A fresh clone or checkout stamps
+     every file with the same mtime in arbitrary order; without a session floor that reads
+     as "work happened" before any has.
+
+The session floor is written to `.claude/.session-start` by the SessionStart hook. If it is
+missing the guard still works — it just cannot separate this session's edits from older ones,
+so it falls back to the plain "newer than the handoff" comparison.
 
 Loop-safe: honours `stop_hook_active`, so it fires at most once per stop.
 Exit 2 blocks the stop and sends stderr to the model.
@@ -19,8 +35,18 @@ BLOCK = 2
 ALLOW = 0
 IGNORED_DIRS = {".git", "__pycache__", ".venv", "node_modules", ".pytest_cache"}
 
+# Written by the session-end ritual (PROTOCOL.md §2.3), not evidence that work happened.
+# HANDOFF.md is the file being checked; the other four are written *after* it, by design.
+RITUAL_DOCS = {"HANDOFF.md", "DIARY.md", "DECISIONS.md", "RISKS.md", "ASSUMPTIONS.md"}
 
-def newest_mtime(root, skip_names=()):
+# Shared work that lives outside projects/ and belongs to every project at once — the
+# shared simulator is on both projects' SURFACES.md. Empty until such a directory exists;
+# add repo-relative directory names here when it does.
+SHARED_WORK_DIRS = ()
+
+
+def newest_work(root, skip_names=()):
+    """Newest mtime under root, ignoring ritual documents and dotfiles."""
     newest = 0.0
     newest_path = None
     for dirpath, dirnames, filenames in os.walk(root):
@@ -36,6 +62,15 @@ def newest_mtime(root, skip_names=()):
             if m > newest:
                 newest, newest_path = m, p
     return newest, newest_path
+
+
+def session_floor(repo):
+    """When this session began, per the SessionStart hook. 0.0 if unknown."""
+    try:
+        with open(os.path.join(repo, ".claude", ".session-start"), encoding="utf-8") as fh:
+            return float(fh.read().strip())
+    except (OSError, ValueError):
+        return 0.0
 
 
 def main():
@@ -55,18 +90,36 @@ def main():
     if not os.path.isdir(projects):
         return ALLOW
 
+    floor = session_floor(repo)
+
+    # Shared work counts against every project's handoff.
+    shared_newest, shared_path = 0.0, None
+    for name in SHARED_WORK_DIRS:
+        d = os.path.join(repo, name)
+        if os.path.isdir(d):
+            m, p = newest_work(d, skip_names=RITUAL_DOCS)
+            if m > shared_newest:
+                shared_newest, shared_path = m, p
+
     stale = []
     for slug in sorted(os.listdir(projects)):
         pdir = os.path.join(projects, slug)
         if not os.path.isdir(pdir):
             continue
+
+        newest, newest_path = newest_work(pdir, skip_names=RITUAL_DOCS)
+        if shared_newest > newest:
+            newest, newest_path = shared_newest, shared_path
+
+        # Nothing touched this session — nothing to record.
+        if newest <= floor:
+            continue
+
         handoff = os.path.join(pdir, "HANDOFF.md")
         if not os.path.isfile(handoff):
             stale.append((slug, "HANDOFF.md does not exist"))
             continue
-        h_mtime = os.path.getmtime(handoff)
-        newest, newest_path = newest_mtime(pdir, skip_names={"HANDOFF.md"})
-        if newest > h_mtime:
+        if newest > os.path.getmtime(handoff):
             rel = os.path.relpath(newest_path, repo) if newest_path else "?"
             stale.append((slug, f"`{rel}` is newer than its HANDOFF.md"))
 

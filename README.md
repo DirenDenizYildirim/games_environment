@@ -19,6 +19,7 @@ projects/canvascurse/        nine state documents
 .claude/skills/              nine slash commands
 .claude/workflows/           three — redteam, litsweep, doc-audit
 .claude/hooks/               three — session start, Tier 3 guard, handoff guard
+tools/protocol-drift.py      drift detector against the sibling environment
 ```
 
 ## The theory lives elsewhere
@@ -64,13 +65,16 @@ list means stop and wait.
 
 ## What the hooks do
 
-- **SessionStart** prints a compact orientation block and warns if `~/MainIdeas` cannot be
-  reached — which would silently break every theory reference in the repo.
+- **SessionStart** prints a compact orientation block, warns if `~/MainIdeas` cannot be
+  reached — which would silently break every theory reference in the repo — and reports
+  protocol drift against `Robotics_env`, staying silent when there is none.
 - **PreToolUse** blocks writes to `~/MainIdeas/Theories/**` and to a `PREREGISTRATION.md` that
   is no longer marked a stub; asks before writing to `DECISIONS_LEDGER.md`, restating the four
   rules.
 - **Stop** refuses to end a session that modified a project without updating that project's
-  `HANDOFF.md`. It fires at most once and stays silent on read-only sessions.
+  `HANDOFF.md`. It fires at most once and stays silent on read-only sessions. The session-end
+  documents themselves — DIARY, DECISIONS, RISKS, ASSUMPTIONS — do not count as work, because
+  §2.3 writes them *after* the handoff and would otherwise trip the guard every time.
 
 Hooks are Python 3, no external dependencies. They fail open — a broken hook never blocks
 work.

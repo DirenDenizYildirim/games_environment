@@ -176,7 +176,8 @@ paragraph is defensible; what is missing is the moment where someone decided.
 **The instance.** The APC theory document grew from an eleven-line `topics.md` seed —
 *"a ball moving north… if there is a threat on the northwest our swarm needs to position
 itself"*, targeted by the seed at *"probably a workshop paper in a smaller conference"* — to
-**805 lines and a fourteen-month four-phase hardware programme**. Along the way it adopted
+**805 lines and a fourteen-month four-phase hardware programme** — 826 lines as of
+2026-08-17, and still growing, which is the point. Along the way it adopted
 **aerial drones**, a platform contradicting its own §12, which said differential-drive ground
 robots. Nobody chose that. It surfaced on 2026-08-16 through an unrelated export-control
 check, months later. He named it *"the curse of AI writing my theory doc."*

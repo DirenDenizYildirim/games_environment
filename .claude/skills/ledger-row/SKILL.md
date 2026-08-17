@@ -65,9 +65,9 @@ cheapest rows for him to resolve.
 ## Why this exists
 
 The APC theory document grew from an eleven-line seed targeting a workshop paper to 805 lines
-and a fourteen-month hardware programme, having silently adopted **aerial drones** — a
-platform contradicting its own §12. It surfaced months later through an unrelated
-export-control check. He named it *"the curse of AI writing my theory doc."*
+(826 today) and a fourteen-month hardware programme, having silently adopted **aerial
+drones** — a platform contradicting its own §12. It surfaced months later through an
+unrelated export-control check. He named it *"the curse of AI writing my theory doc."*
 
 Every row you write is one instance of that not happening again.
 
