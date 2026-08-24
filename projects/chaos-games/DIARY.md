@@ -123,3 +123,32 @@ turned out to be wrong, the archive is write-once so the wrong sentence stays vi
 correction is a second file rather than a silent edit. That is the mechanism working as
 designed, and it is the first time in this project it has caught one of **mine** rather than
 one inherited from a source.
+
+**Second addendum, same day — the search phase closed, and a near-miss.**
+
+**Changed my mind about:** how much narrowing is worth doing before code. He stopped the
+literature work, and the diagnosis was right and checkable in the artifacts: the declared sweep
+was four forward sets, I finished those and then chased the thesis, the PIMC paper and the FDG
+paper — none of them in the protocol — because each read produced its own next target. That is
+a loop, not a method. `SEARCH-PROTOCOL.md` §1 says `k` is *"reported as a number, not a verdict
+— nothing in this repo passes or fails on its output"*, and §5's stopping rule is
+term-exhaustion, not "keep pulling threads." Meanwhile the actual result — **`k = 0` on the
+specific conjunction, twice, and the `L` distinction surviving both runs** — got one line and
+the adjacency inventory got three hundred. `FAILURE-MODES.md` F-6 is the parent project dying
+on a gate that was *"trivially satisfiable as an objection and unfalsifiable as a defence"*;
+over-narrowing is that failure in a different costume. The novelty sentence is a March
+deliverable and there is no novelty claim in flight, so pinning it against a moving premise was
+work done twice.
+
+**Surprised by:** R-15 was carried as *"Verified verbatim"* for two days on a source
+`READING-2026-08-22.md` §3 simultaneously marked `[T]` — *"fetch-layer summary only."* Reading
+the original settled it: the sentence is genuine, line 854, word for word. **It was right by
+luck, not by process.** The interesting part is what only the original showed — their Figure 3
+uses **homogeneous agents**, so the opposition to §6.8's cross-policy `Σ` is weaker than the
+row asserted, and they name **Hearts** as a counterexample to their own trend that they cannot
+explain. §6.8 says one such game would be worth foregrounding. The register had been holding an
+opportunity filed as a threat, which is the same bias as the paragraph above, pointed inward.
+
+**Unresolved:** the ledger, still. Ten drafted rows and §3 ends at G-11 where it ended on
+2026-08-17. **G-2 and G-20 now block specific build items**, so this stopped being a filing
+question and became a scheduling one.
