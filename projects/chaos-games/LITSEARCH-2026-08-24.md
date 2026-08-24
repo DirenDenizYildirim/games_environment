@@ -19,6 +19,28 @@ incumbent artifact and K1 could not extract it).
 > literature). Every tier below travels with its claim. The one `[V]` retrieval was read in
 > the original; everything marked `[T]` **may not carry a novelty claim.**
 
+> ## ⚠ APPENDED CORRECTION — 2026-08-24, later the same day
+>
+> **This is an addendum to a write-once file. No original text below has been altered** — the
+> superseded claims stay visible on purpose. Added because §1.1's table states `[T]` guesses in
+> bold declarative rows, and the hedge that follows it is easy to walk past.
+>
+> **§1.1's last four table rows were title-only inferences from a publication list.** Three have
+> since been checked:
+>
+> | Row | What it claims | Status |
+> |---|---|---|
+> | *Following the Leader*, FDG 2023 → **"§3.4's feedback coefficient `θ` — snowballing / leader dynamics"** | — | **WRONG.** The paper is about **agent objective functions** (win rate vs rank vs score) and rollout length, **not** game feedback structure. **§3.4's `θ` remains unoccupied by anything retrieved.** Corrected in `READING-2026-08-24.md` §3 |
+> | PIMC, CoG 2026 → **"`Δ_model` · R-14"** | reads as a threat | **OVERSTATED.** Read `[V-sub]`: it formalises **no** model-mismatch quantity. **`Δ_model` survives.** R-14 is retired to a citation obligation. `READING-2026-08-24.md` §2 |
+> | *Skill Depth*, CoG 2024 → ladder / `τ_rank` / G-3 | — | **CONFIRMED and strengthened.** Read `[V]` in full. `READING-2026-08-24.md` §1 |
+> | *Fingerprinting* + *Visualising* → "§5.1 game selection · G-6" | — | **STILL UNVERIFIED.** Same class of guess as row 1. Neither paper has been read. **Do not act on this row.** |
+>
+> **Also corrected elsewhere:** §5's surfaces table lists *Following the Leader* as *"Bears on
+> §3.4's `θ`"* — same error, same correction.
+>
+> **The pattern to carry forward:** a `[T]` marker on a row does not stop a **bold declarative
+> table cell** from being read as a finding. Tier the cell, not the footnote.
+
 ---
 
 ## 1. Result

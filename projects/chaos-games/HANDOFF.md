@@ -125,6 +125,18 @@ His. Prior rows first, then this session's.
   `/assets/pdf/`. Use it instead of searching. **Its thesis link is stale.**
 - **QMRO is network-blocked from this machine** (`"Web Page Blocked!"` / `000` / `socket hang
   up`), and **CORE is Cloudflared**. Do not re-attempt either; the thesis needs a browser.
+- **`Seeding for Success` (ToG 2025) is now `[V]`, not `[T]`** — read in the original
+  2026-08-24. It had a three-way tier conflict across `LITSEARCH-2026-08-17.md` (`[V-sub]`),
+  `READING-2026-08-22.md` (`[T]`) and this file (`[T]`); both archives now carry a correction
+  banner. **Machado is still `[T]`** and no novelty claim may rest on it.
+- **R-15 was `"Verified verbatim"` on a `[T]` source for two days.** The quote turned out real —
+  by luck, not process. If you see `Verified` in a register row, check what tier the underlying
+  read was. **This is the one place F-1 got into the live register.**
+- **Hearts is a named `Σ < 0` candidate**, from the incumbent, unexplained in print. Make it one
+  of §6.8's two pilot games. `RISKS.md` R-15.
+- **`LITSEARCH-2026-08-24.md` §1.1 has one row that is still an unverified guess** —
+  *Fingerprinting* / *Visualising* → "§5.1 game selection · G-6". Neither has been read. The
+  banner at the top of that file marks it; do not act on the row.
 - **Do not repeat that *Following the Leader* (FDG 2023) bears on §3.4's `θ`.** It was written
   that way in `LITSEARCH-2026-08-24.md` §1.1 from a title alone and **it is wrong** — the paper
   is about **agent objective functions**, not game feedback structure. §3.4's `θ` remains
@@ -142,7 +154,10 @@ His. Prior rows first, then this session's.
 - **`Σ` collides.** Theory §6.8 vs arXiv:2511.11611. Ledger G-21.
 - **The `L` distinction survived a second run** — every length-adjacent result retrieved is about
   **repetitions of a match**, not **decisions within a match**. Do not let a summary blur it.
-- **§6.8's sign is confirmed opposed.** Unchanged. Pilot `Σ` on two games first.
+- **§6.8's sign: the opposition is real but weaker than the register said.** Their Figure 3 uses
+  **homogeneous agents** (equal budget both sides); `Σ` compares **different** policies — a
+  different design, not just a different quantity. Still pilot `Σ` on two games first, and make
+  one of them **Hearts**. `RISKS.md` R-15.
 - **Their instrument is seed variation; ours is noise injection.** They do not inject noise.
 - **TAG is JVM.** Unchanged. Ledger G-7.
 - **This document has no seed of its own** in `topics.md`. Ledger X-1b.
