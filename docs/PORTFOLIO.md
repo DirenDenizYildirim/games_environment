@@ -1,7 +1,10 @@
 # PORTFOLIO — Games_env
 
 _Register of what this repo is building, against what deadline, behind which gates._
-_Last reviewed: 2026-08-17._
+_Last reviewed: 2026-08-24 — the mandatory forward-citation sweep is **run**; the incumbent
+turns out to be a research programme with a PhD thesis, not two papers; and §7.1 of the
+`chaos-games` theory document is wrong in two compounding ways. See
+`projects/chaos-games/LITSEARCH-2026-08-24.md` and `DERIVATION-2026-08-24.md`._
 
 Read this at session start after the active project's `HANDOFF.md`. The handoff is
 project-local truth; this file is what changed around it.
@@ -47,6 +50,47 @@ on TAG; Machado et al.'s sticky actions; Long et al. on strategy fusion). Risks 
 R-14 materialized on paper rather than at review. The run was **bounded** — ~4% of the term
 cross-product, no forward-citation sweep — so its `k = 0` is provisional and a full sweep is
 still owed. Four draft ledger rows **G-12…G-15** await marking.
+
+**2026-08-22 — the Goodman companion was extracted and read**
+(`projects/chaos-games/READING-2026-08-22.md`). It **does** contain the length analysis the
+ToG paper lacks: Figure 2 sweeps rounds-to-win in Love Letter and reports Trimmed Span
+1.0 → 0.64. The `L^(−1/2)` claim **survives** — one game, a rule parameter, outcome *spread*
+rather than a collapse *threshold*, no functional form fitted — but the qualitative
+length–randomness relation is now published at CoG by the incumbent and may not be claimed
+here. **R-14 narrowed:** Long et al. formalise no mismatch quantity, hold depth constant, and
+are partly a *supporting* citation. **Two exposures no register held:** their §VI future work
+*is* this project's question, in print (**R-16**); and **G-11's M ≈ 785 rests on a fixed-`p`
+binomial the incumbent has published as inadequate and is currently correcting (R-17)**,
+which puts the compute figure in `BUDGET.md` §1 under contest from outside. Three further
+draft rows **G-16…G-18**, bringing the unwritten total to **seven**.
+
+**2026-08-24 — the forward-citation sweep ran, and found more beside the targets than in
+them** (`projects/chaos-games/LITSEARCH-2026-08-24.md`). **R-16 answers NO so far:** six
+forward citations across both Goodman 2024/2025 papers, none taking up their printed §VI
+question. The specific conjunction holds at `k = 0`; the broad `k` goes 12 → 16.
+
+**But a third Goodman CoG 2024 paper exists that no register here held** — *Skill Depth in
+Tabletop Board Games*, read in the original. It occupies the **skill-ladder** framing the way
+the ToG paper occupies the randomness framing: 16 TAG games, MCTS budget ladder, and a fitted
+three-parameter win-rate model whose `M` is a per-game skill-separation ceiling explicitly
+attributed to stochasticity. `tabletopgames.ai` also lists a **2025 QMUL PhD thesis**
+incorporating all of it, a **CoG 2026 paper on PIMC in imperfect-information games** (which
+lands on `Δ_model`), and an **FDG 2023 paper on leader-following** (which lands on §3.4's `θ`).
+**The exposure is a research programme, not two papers.** **R-18 added** — their own experiment
+shows a small MCTS parameter shift lets a 32 ms agent beat a 1024 ms agent, which makes the
+skill ladder's calibration per-game and parameter-dependent, and therefore a confound in the
+headline regression. **R-14 re-opened**, **R-12/R-16 widened**, **R-17 gained a route** (the
+thesis may hold the unpublished error-bound correction that gates `M ≈ 785`).
+
+**Separately, a derivation check found §7.1 wrong twice** (`DERIVATION-2026-08-24.md`): it
+substitutes a total over injection times into §3.2's per-decision variance slot, and its
+integrand contradicts §6.2's own boundedness statement. **Correcting both restores the
+`L^(−1/2)` law** — §7.1 as written implies the central claim fails in any game with appreciable
+λ — while weakening the Paper A ↔ Paper B bridge from *exponential in λL* to *saturating in
+λL*. Any edit following from this is Tier 3.
+
+**Three further draft ledger rows G-19…G-21, bringing the unwritten total on this project to
+ten.** `DECISIONS_LEDGER.md` §3 still ends at G-11.
 
 Live tensions worth knowing before touching it:
 
@@ -128,9 +172,16 @@ If he reverses it, the first casualty is O-7 — half a day of literature work t
 
 ## 5. What would change this file
 
-- A ledger row in §2 or §3 getting marked.
+- A ledger row in §2 or §3 getting marked. **Seven are now drafted and unwritten on
+  `chaos-games` alone** (G-12…G-18).
 - CoG 2027 publishing a track list or a revised date.
 - O-7 or O-12 completing.
+- ~~The forward-citation sweep completing~~ — **run 2026-08-24.** What replaces it as a
+  trigger: **the CoG/CIG 2019–2025 hand sweep**, which still has no open item on this project
+  and which the sweep's own best retrieval argues for.
+- **Goodman's 2025 PhD thesis being read** — it may resolve R-17 and therefore `BUDGET.md` §1.
+- **Goodman et al. publishing their error-bound correction** — it lands directly on G-11,
+  M ≈ 785 and therefore the whole compute budget (R-17).
 - A decision on the §3 recommendation.
 - Code starting, at which point `SURFACES.md` in each project becomes live rather than
   provisional.
