@@ -109,3 +109,9 @@ what remains is term-exhaustion and the CoG/CIG hand sweep, neither of which blo
 the source has now been read in the original and the quote is genuine, but the severity is lower
 than recorded and **Hearts** is added as a named `Σ < 0` candidate. **Live rows: 18 → 15**, of
 which the ones that gate work before March are **R-17, R-18, R-2, R-3, R-4, R-5, R-6**._
+
+_2026-08-24 (fourth entry) — **register read in full, no status changes.** Toolchain-only
+session: a JDK and Maven were installed locally (`HANDOFF.md` → Standing) and no code was
+written. **R-2 is unchanged and still waits on the `L` table**, which is now unblocked on the
+tooling side. Nothing here bears on **R-17** — the thesis remains network-blocked, and the
+build network being open does not change that._

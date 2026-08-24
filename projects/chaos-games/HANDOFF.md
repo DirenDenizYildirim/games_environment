@@ -1,5 +1,5 @@
 # HANDOFF — chaos-games
-_Last session: 2026-08-24 | main | dc36715 | desk work closed; build not yet started_
+_Last session: 2026-08-24 (second) | main | d170627 | JVM toolchain installed; build not yet started_
 
 ## Current state
 
@@ -54,7 +54,7 @@ Tier 2.**
    *not* Tier 2 per `SURFACES.md`'s own exclusion table. Do not memo it.
 3. **TAG running headless** — Tier 1 — done means: one game, one MCTS agent, one match, from a
    script, twice, identical output. A toolchain check. **The moment an adapter is written it
-   becomes Tier 2.**
+   becomes Tier 2.** **The JDK half is discharged** — see Standing; what remains is TAG itself.
 4. **Measure `L` for every game TAG ships** — Tier 1 — done means: a table of
    decisions-per-player-per-match across the roster, with variance.
    **Highest-value thing available.** §5.1 says spread in `L` *"dominates every other
@@ -141,6 +141,18 @@ His. **Ten rows drafted and unwritten; `DECISIONS_LEDGER.md` §3 still ends at G
 
 **Standing**
 
+- **The JVM toolchain is installed** (2026-08-24): `jdk21-openjdk 21.0.11.u10-1` and
+  `maven 3.9.16-1`, via `pacman -U` from `archive.archlinux.org` — **not** from the live
+  mirrors. This machine's package database is from **2026-07-11** and current mirrors 404 on
+  that JDK version; the archive route pins the versions the stale database expects, which is
+  why it needed no system upgrade and no reboot. `mvn -v` reports Java 21 at
+  `/usr/lib/jvm/java-21-openjdk` and finds it unaided — **`JAVA_HOME` is not set and does not
+  need to be.** **A `pacman -Syu` will replace all four packages**: re-run `mvn -v` after any
+  system upgrade before blaming a build failure on TAG.
+- **The build network is open from this machine, unlike the literature network.**
+  `repo.maven.apache.org`, `github.com` and `plugins.gradle.org` all return 200.
+  **QMRO and CORE remain blocked** — the two facts are unrelated; do not generalise from
+  either to the other.
 - `tabletopgames.ai/Research.html` indexes this group's PDFs; `curl -L` + `pdftotext` works.
   **QMRO and CORE are blocked from this machine — do not retry.**
 - **`Σ` collides** — theory §6.8 vs arXiv:2511.11611. Ledger **G-21**.
