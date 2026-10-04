@@ -1,0 +1,3 @@
+cond,seed,done,steps_trained,steps_to_50,steps_to_80,auc,final_train_success,final_eval_success,phase1_end_step,phase1_navigate,phase1_hazard,phase1_key_door,phase1_reached_target
+A,0,False,2871296,,,,,,,,,,
+B,0,False,4823089,600000.0,,,,,319488.0,1.0,0.88,1.0,True

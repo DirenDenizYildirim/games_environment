@@ -12,10 +12,10 @@ size  7 seed 100: trained 1.72M, last-500k training success 0.005, final eval su
 size  9 seed 100: trained 1.32M, last-500k training success 0.008, final eval success nan  (stopped early or running)
     curve (per 500k): 0.01 0.01 0.01
 --- calib3: size 7 lava 4% max_steps 10*size^2 agent-centred view; size 9 lava 4% max_steps 10*size^2 agent-centred view
-size  7 seed 100: trained 2.35M, last-500k training success 0.007, final eval success nan  (stopped early or running)
-    curve (per 500k): 0.00 0.01 0.00 0.01 0.01
-size  7 seed 101: trained 2.38M, last-500k training success 0.001, final eval success nan  (stopped early or running)
-    curve (per 500k): 0.02 0.02 0.01 0.01 0.00
+size  7 seed 100: trained 5.00M, last-500k training success 0.005, final eval success 0.000  (done)
+    curve (per 500k): 0.00 0.01 0.00 0.01 0.01 0.01 0.01 0.00 0.00 0.00
+size  7 seed 101: trained 5.00M, last-500k training success 0.000, final eval success 0.000  (done)
+    curve (per 500k): 0.02 0.02 0.01 0.01 0.00 0.01 0.00 0.01 0.01 0.00
 size  9 seed 100: trained 1.22M, last-500k training success 0.004, final eval success nan  (stopped early or running)
     curve (per 500k): 0.01 0.01 0.00
 --- calib3b: size 7 lava 8% max_steps 4*size^2 agent-centred view
