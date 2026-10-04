@@ -1,0 +1,11 @@
+=== calibration: condition A only, success of training episodes ===
+size 11 seed 100: trained 0.85M, last-500k training success 0.000, final eval success nan  (running)
+    curve (per 500k): 0.00 0.00
+size  7 seed 100: trained 1.52M, last-500k training success 0.000, final eval success nan  (running)
+    curve (per 500k): 0.00 0.00 0.00 0.00
+size  9 seed 100: trained 1.15M, last-500k training success 0.000, final eval success nan  (running)
+    curve (per 500k): 0.00 0.00 0.00
+sanity B_size9_s100: sub-task training success per 500k steps:
+    navigate  0.06 0.11 0.54
+    hazard    0.02 0.03 0.08
+    key_door  0.14 0.22 0.57

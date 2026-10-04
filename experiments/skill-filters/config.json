@@ -1,9 +1,15 @@
 {
   "total_steps": 5000000,
-  "size": null,
-  "sanity_size": 9,
-  "calib_sizes": [7, 9, 11],
+  "env": null,
+  "calib": {
+    "calib":  [{"size": 7, "lava_frac": 0.08, "max_steps_mult": 4},
+               {"size": 9, "lava_frac": 0.08, "max_steps_mult": 4},
+               {"size": 11, "lava_frac": 0.08, "max_steps_mult": 4}],
+    "calib2": [{"size": 7, "lava_frac": 0.04, "max_steps_mult": 10},
+               {"size": 9, "lava_frac": 0.04, "max_steps_mult": 10}]
+  },
   "calib_seeds": [100],
+  "sanity_env": {"size": 9, "lava_frac": 0.08, "max_steps_mult": 4},
   "main_seeds": [0, 1, 2, 3, 4],
   "K": 4,
   "phase1_max_frac": 0.5,

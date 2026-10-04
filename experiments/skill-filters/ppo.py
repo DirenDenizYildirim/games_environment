@@ -43,6 +43,8 @@ def parse_args(argv=None):
     p.add_argument("--cond", choices="ABCD", required=True)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--size", type=int, default=9)
+    p.add_argument("--lava-frac", type=float, default=0.08)
+    p.add_argument("--max-steps-mult", type=int, default=4, help="episode limit = mult * size^2")
     p.add_argument("--total-steps", type=int, default=2_000_000)
     p.add_argument("--out", required=True)
     # PPO hyperparameters: identical for every condition and for both phases
@@ -225,13 +227,17 @@ class Run:
 
     # -- environments
     def make_envs(self, mode, base_seed):
-        envs = [SkillFilterEnv(size=self.args.size, mode=mode, subgoal_bonus=(self.cond == "D"))
+        envs = [SkillFilterEnv(size=self.args.size, mode=mode, subgoal_bonus=(self.cond == "D"),
+                               **self.env_kw())
                 for _ in range(self.args.num_envs)]
         obs = []
         for i, e in enumerate(envs):
             o, _ = e.reset(seed=base_seed + i)
             obs.append(o["image"])
         return envs, np.stack(obs)
+
+    def env_kw(self):
+        return dict(lava_frac=self.args.lava_frac, max_steps=self.args.max_steps_mult * self.args.size ** 2)
 
     def skill_input(self, obs, tasks):
         """Observation fed to the skill policy: masked by filter for B, raw for C/A/D."""
@@ -401,7 +407,7 @@ class Run:
         a = self.args
         res = {}
         for t, name in enumerate(SUBTASKS):
-            env = SkillFilterEnv(size=a.size, mode=name)
+            env = SkillFilterEnv(size=a.size, mode=name, **self.env_kw())
             succ = 0
             for ep in range(a.phase1_eval_episodes):
                 o = env.reset(seed=10_000_000 + ep)[0]["image"][None]
@@ -422,7 +428,7 @@ class Run:
         a = self.args
         rows = []
         n_par = 25
-        envs = [SkillFilterEnv(size=a.size, mode="full") for _ in range(n_par)]
+        envs = [SkillFilterEnv(size=a.size, mode="full", **self.env_kw()) for _ in range(n_par)]
         next_ep = 0
         obs = np.zeros((n_par, a.size, a.size, 2), dtype=np.uint8)
         ep_id = [None] * n_par

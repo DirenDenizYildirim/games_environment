@@ -66,6 +66,7 @@ B, C or D existed**; section 7 is appended as runs happen (crashes, reruns, surp
 |---|---|
 | Calibration on condition A only, at sizes 7, 9, 11, seed 100, at the full 5M budget | Your spec: pick the size from the baseline only, then freeze. |
 | Pick the size whose A final success is in 20–90%, closest to the middle (≈55%), preferring the larger size on a tie | Mid-range leaves room to see both "faster" and "slower". |
+| Fallback if even size 7 stays below 20%: lower the lava fraction (8% → 4%), then re-run the A calibration; the budget is changed only as a last resort | Size 7 is the smallest grid the two-room layout allows, so lava density is the next difficulty knob. Still decided from A alone. |
 
 ## 6. Analysis plan (fixed before results)
 
@@ -108,3 +109,5 @@ killed the agent was hidden by that filter.
 
 | When | What | Why / effect |
 |---|---|---|
+| Calibration round 1 | Condition A at sizes 7/9/11 (8% lava, `max_steps` = 4·size²) learned **nothing** in 1.1–1.5M steps: training success stayed at the random-policy level (~0.2%), entropy near maximum. Size 11 and size 9 were stopped early to free cores (stopped, not crashed; shows as `rc=-15` in `results/calib.log`); size 7 kept running to its full 5M as a record. | Fallback from §5 used: lava 8% → 4%. The episode limit was also raised to MiniGrid's DoorKey convention (10·size²), because at size 7 most episodes were timing out (≈1,100 of ≈1,500 per 250k steps) before a near-random policy could stumble on the 3-step chain key → door → goal. Both are environment-difficulty changes decided from A alone. |
+| Same time, for the record | The phase-1 sanity run (B, original env) was already learning sub-tasks at 1.5M steps (navigate 54%, key_door 57%, hazard 8%) while A was flat. | Not used to choose anything; noted because it is early evidence about the idea. |

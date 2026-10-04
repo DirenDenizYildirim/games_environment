@@ -17,16 +17,22 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG = json.load(open(os.path.join(HERE, "config.json")))
 
 
+def env_args(v):
+    return ["--lava-frac", str(v["lava_frac"]), "--max-steps-mult", str(v["max_steps_mult"])]
+
+
 def jobs(batch):
     c = CONFIG
-    if batch == "calib":
-        return [("A", s, size, c["total_steps"], []) for size in c["calib_sizes"] for s in c["calib_seeds"]]
+    if batch in c["calib"]:  # calibration rounds; each lists (size, lava_frac, max_steps_mult)
+        return [("A", s, v["size"], c["total_steps"], env_args(v))
+                for v in c["calib"][batch] for s in c["calib_seeds"]]
     if batch == "sanity":
         # phase 1 only: give it the full phase-1 allowance and stop right after
-        return [("B", s, c["sanity_size"], c["total_steps"], ["--phase1-only", "1"])
+        return [("B", s, c["sanity_size"], c["total_steps"], ["--phase1-only", "1"] + env_args(c["sanity_env"]))
                 for s in c["calib_seeds"][:1]]
     if batch == "main":
-        return [(cond, s, c["size"], c["total_steps"], []) for s in c["main_seeds"] for cond in "ABCD"]
+        return [(cond, s, c["env"]["size"], c["total_steps"], env_args(c["env"]))
+                for s in c["main_seeds"] for cond in "ABCD"]
     if batch.startswith("opt_"):
         return []  # optional extensions, added only after the main write-up
     raise SystemExit(f"unknown batch {batch}")
