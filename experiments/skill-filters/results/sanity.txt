@@ -1,0 +1,42 @@
+random policy, size 9, mode full      (2000 episodes): ball 0.2%, lava 64.5%, success 0.1%, timeout 35.2%
+random policy, size 9, mode navigate  (2000 episodes): success 3.8%, timeout 96.2%
+random policy, size 9, mode hazard    (2000 episodes): ball 3.4%, lava 65.5%, success 1.7%, timeout 29.5%
+random policy, size 9, mode key_door  (2000 episodes): success 3.2%, timeout 96.8%
+
+Legend: # wall, D locked door, d closed door, O open door, k key, o moving ball, ~ lava, G goal, >v<^ agent
+
+=== layout seed 3: full observation, then each filter ===
+no filter   navigate    hazard      key_door 
+#########   #########   #########   #########
+#....D..#   #....D..#   #.......#   #....D..#
+#~...#.~#   #....#..#   #~...#.~#   #....#..#
+#...~#o.#   #....#..#   #...~#o.#   #....#..#
+#....#..#   #....#..#   #....#..#   #....#..#
+#>...#.G#   #>...#.G#   #>...#.G#   #>...#..#
+#k...#..#   #....#..#   #....#..#   #k...#..#
+#....#..#   #....#..#   #....#..#   #....#..#
+#########   #########   #########   #########
+
+=== layout seed 11: full observation, then each filter ===
+no filter   navigate    hazard      key_door 
+#########   #########   #########   #########
+#...#...#   #...#...#   #...#...#   #...#...#
+#...#...#   #...#...#   #...#...#   #...#...#
+#...#G..#   #...#G..#   #...#G..#   #...#...#
+#.>.#...#   #.>.#...#   #.>.#...#   #.>.#...#
+#.k.#.~.#   #...#...#   #...#.~.#   #.k.#...#
+#...#.o~#   #...#...#   #...#.o~#   #...#...#
+#...D..~#   #...D...#   #......~#   #...D...#
+#########   #########   #########   #########
+
+=== what each sub-task episode looks like (same layout seed 3, unfiltered) ===
+full        navigate    hazard      key_door 
+#########   #########   #########   #########
+#....D..#   #....d..#   #....O..#   #....D..#
+#~...#.~#   #....#..#   #~...#.~#   #....#..#
+#...~#o.#   #....#..#   #...~#o.#   #....#..#
+#....#..#   #....#..#   #....#..#   #....#..#
+#>...#.G#   #>...#.G#   #>...#.G#   #>...#..#
+#k...#..#   #....#..#   #....#..#   #k...#..#
+#....#..#   #....#..#   #....#..#   #....#..#
+#########   #########   #########   #########

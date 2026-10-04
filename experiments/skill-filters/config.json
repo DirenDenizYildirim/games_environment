@@ -1,0 +1,11 @@
+{
+  "total_steps": 5000000,
+  "size": null,
+  "sanity_size": 9,
+  "calib_sizes": [7, 9, 11],
+  "calib_seeds": [100],
+  "main_seeds": [0, 1, 2, 3, 4],
+  "K": 4,
+  "phase1_max_frac": 0.5,
+  "workers": 4
+}
