@@ -67,7 +67,7 @@ def apply_filter(obs, filt):
 
 class SkillFilterEnv(MiniGridEnv):
     def __init__(self, size=9, mode="full", subgoal_bonus=False, lava_frac=0.08, n_balls=None,
-                 max_steps=None, ego=True, **kwargs):
+                 max_steps=None, ego=False, **kwargs):
         assert mode in ("full",) + SUBTASKS
         self.mode = mode
         self.ego = ego  # agent-centred, rotated view of the whole map (see gen_obs)

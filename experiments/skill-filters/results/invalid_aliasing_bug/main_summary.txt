@@ -1,0 +1,59 @@
+=== per-condition summary (n = number of seeds; comparison: between-condition, independent seeds) ===
+cond  n to 50% (per seed)                            to 80% (per seed)                              final eval success          AUC
+A     2 not reached, not reached                     not reached, not reached                         0.004 ± 0.000   0.007 ± 0.005
+B     2 0.6M, 0.6M                                   not reached, not reached                         0.641 ± 0.018   0.565 ± 0.009
+C     1 not reached                                  not reached                                      0.056 ± 0.000   0.022 ± 0.000
+D     1 not reached                                  not reached                                      0.060 ± 0.000   0.050 ± 0.000
+
+final eval success per seed:
+  A: s0=0.004, s1=0.004
+  B: s0=0.654, s1=0.628
+  C: s0=0.056
+  D: s0=0.060
+
+=== verdict statistics (pre-registered in DECISIONS.md section 6) ===
+B vs A (primary) steps_to_50: B median 0.60M (reached 2/2), A median 5.10M (reached 0/2); one-sided Mann-Whitney (B faster) p = 0.167   [not reached = 5.1M]
+B vs A (primary) steps_to_80: B median 5.10M (reached 0/2), A median 5.10M (reached 0/2); one-sided Mann-Whitney (B faster) p = 1.000   [not reached = 5.1M]
+B vs A (primary) AUC: B 0.565, other 0.007; one-sided M-W (B higher) p = 0.167
+B vs A (primary) final success: B 0.641, other 0.004; one-sided M-W (B higher) p = 0.167
+
+=== phase 1 (B, C): skill policy alone on each sub-task, 300 eval episodes each ===
+  B s0: navigate 1.00, hazard 0.88, key_door 1.00   phase 1 ended at 0.32M steps
+  B s1: navigate 1.00, hazard 0.94, key_door 1.00   phase 1 ended at 0.41M steps
+  C s0: navigate 0.37, hazard 0.13, key_door 0.61   phase 1 ended at 2.50M steps (hit the 50% cap, target not reached)
+
+=== final evaluation: outcomes (500 episodes per seed, pooled over seeds; per-seed numbers in results/main_failures.csv) ===
+outcome   ball   lava  success  timeout
+cond                                   
+A        0.010  0.340    0.004    0.646
+B        0.208  0.145    0.641    0.006
+C        0.092  0.490    0.056    0.362
+D        0.126  0.508    0.060    0.306
+
+failures (lava/ball/timeout) in B and C broken down by the filter active at the last step:
+  B: 359 failures out of 1000 episodes
+    outcome        ball  lava  timeout
+    filter_at_end                     
+    hazard           29     8        5
+    key_door        173   134        0
+    navigate          6     3        1
+    deaths where the active filter hides the hazard type that killed the agent: 316 / 353 deaths (89.5%); = 31.6% of all episodes
+    timeouts: had key 50%, had opened door 50%
+  C: 472 failures out of 500 episodes
+    outcome        ball  lava  timeout
+    filter_at_end                     
+    hazard           12    88       79
+    key_door         29   118       73
+    navigate          5    39       29
+    (C's skill policy sees everything, so nothing is hidden from it. Same count, read as: deaths to a hazard type the active sub-task never contained in training)
+    deaths where the active filter hides the hazard type that killed the agent: 191 / 291 deaths (65.6%); = 38.2% of all episodes
+    timeouts: had key 99%, had opened door 29%
+  A timeouts: had key 72%, had opened door 4%
+  D timeouts: had key 100%, had opened door 48%
+
+controller filter usage during final evaluation (share of steps, mean over episodes):
+  B: navigate 0.7%, hazard 70.3%, key_door 28.9%
+     s0: navigate 1.5%, hazard 68.7%, key_door 29.8%
+     s1: navigate 0.0%, hazard 72.0%, key_door 28.0%
+  C: navigate 14.0%, hazard 44.1%, key_door 41.9%
+     s0: navigate 14.0%, hazard 44.1%, key_door 41.9%

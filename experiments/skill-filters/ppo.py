@@ -50,7 +50,7 @@ def parse_args(argv=None):
     p.add_argument("--size", type=int, default=9)
     p.add_argument("--lava-frac", type=float, default=0.08)
     p.add_argument("--max-steps-mult", type=int, default=4, help="episode limit = mult * size^2")
-    p.add_argument("--ego", type=int, default=1, help="1 = agent-centred rotated whole-map view, 0 = fixed map")
+    p.add_argument("--ego", type=int, default=0, help="1 = agent-centred rotated whole-map view, 0 = fixed map")
     p.add_argument("--total-steps", type=int, default=2_000_000)
     p.add_argument("--out", required=True)
     # PPO hyperparameters: identical for every condition and for both phases
@@ -269,7 +269,9 @@ class Run:
         """Observation fed to the skill policy: masked by filter for B, raw for C/A/D."""
         if self.cond == "B":
             obs = np.stack([apply_filter(o, SUBTASKS[t]) for o, t in zip(obs, tasks)])
-        return torch.as_tensor(obs), torch.as_tensor(onehot(tasks))
+        # torch.tensor COPIES. torch.as_tensor would share memory with `obs`, which the env loop
+        # overwrites every step, so every stored rollout observation would become the last one.
+        return torch.tensor(obs), torch.as_tensor(onehot(tasks))
 
     # ------------------------------------------------------------------ single-phase (A, D)
     # and phase 1 (B, C) share one loop: the policy acts every env step.
@@ -390,7 +392,7 @@ class Run:
             cnt = Counter()
             zero_task = torch.zeros(N, len(SUBTASKS))
             for _ in range(T):
-                o_t = torch.as_tensor(obs)
+                o_t = torch.tensor(obs)  # copy: obs is overwritten in place by macro_step
                 with torch.no_grad():
                     f, logp, _, val = self.ctrl.get_action_and_value(o_t, zero_task)
                 fl = f.tolist()

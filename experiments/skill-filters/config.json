@@ -1,11 +1,6 @@
 {
  "total_steps": 5000000,
- "env": {
-  "size": 7,
-  "lava_frac": 0.04,
-  "max_steps_mult": 10,
-  "ego": 1
- },
+ "env": null,
  "calib": {
   "calib": [
    {
@@ -70,6 +65,36 @@
     "ego": 1,
     "seeds": [
      100
+    ]
+   }
+  ],
+  "calib4": [
+   {
+    "size": 7,
+    "lava_frac": 0.08,
+    "max_steps_mult": 4,
+    "ego": 0,
+    "seeds": [
+     200
+    ]
+   },
+   {
+    "size": 9,
+    "lava_frac": 0.08,
+    "max_steps_mult": 4,
+    "ego": 0,
+    "seeds": [
+     200,
+     201
+    ]
+   },
+   {
+    "size": 11,
+    "lava_frac": 0.08,
+    "max_steps_mult": 4,
+    "ego": 0,
+    "seeds": [
+     200
     ]
    }
   ]

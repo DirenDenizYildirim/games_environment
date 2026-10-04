@@ -93,7 +93,7 @@ def fmt_steps(v):
 
 def analyze_main(batch="main"):
     total = CONFIG["total_steps"]
-    runs = [r for r in load_runs(batch) if r["train"] is not None]
+    runs = [r for r in load_runs(batch) if r["train"] is not None and r["done"]]  # finished runs only
     rows, curves = [], {}
     for r in runs:
         c = binned_curve(r["train"], total)
@@ -132,9 +132,13 @@ def plot_curves(curves, per_seed, nb, path):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    colors = {"A": "#1f77b4", "B": "#d62728", "C": "#2ca02c", "D": "#9467bd"}
+    # validated categorical palette (dataviz skill, light mode); line style is a second encoding
+    colors = {"A": "#2a78d6", "B": "#eb6834", "C": "#1baf7a", "D": "#eda100"}
+    styles = {"A": "-", "B": "-", "C": "--", "D": "-."}
+    short = {"A": "A baseline", "B": "B skill filters", "C": "C no filtering", "D": "D sub-goal rewards"}
     x = (np.arange(nb) + 1) * BIN / 1e6
-    fig, ax = plt.subplots(figsize=(8, 4.8))
+    fig, ax = plt.subplots(figsize=(8.5, 4.8))
+    ends = []
     for cond in "ABCD":
         cs = [c for (k, s), c in curves.items() if k == cond]
         if not cs:
@@ -142,22 +146,35 @@ def plot_curves(curves, per_seed, nb, path):
         M = np.array(cs)
         n = len(cs)
         mean = np.nanmean(M, 0)
-        ax.plot(x, mean, color=colors[cond], lw=2, label=f"{COND_NAME[cond]}  (n={n} seeds)")
         ax.fill_between(x, np.nanmin(M, 0), np.nanmax(M, 0), color=colors[cond], alpha=0.15, lw=0)
+        ax.plot(x, mean, color=colors[cond], lw=2, ls=styles[cond], label=f"{COND_NAME[cond]}  (n={n} seeds)")
         if cond in "BC":
             for v in per_seed[per_seed.cond == cond].phase1_end_step.dropna():
                 ax.axvline(v / 1e6, color=colors[cond], ls=":", lw=0.8, alpha=0.6)
+        last = np.where(~np.isnan(mean))[0]
+        if len(last):
+            ends.append([mean[last[-1]], short[cond]])
+    # direct labels at the right edge, nudged apart so they never overlap
+    ends.sort()
+    for i in range(1, len(ends)):
+        ends[i][0] = max(ends[i][0], ends[i - 1][0] + 0.05)
+    for y, lab in ends:
+        ax.text(x[-1] + 0.06, y, lab, va="center", fontsize=8, color="#333333")
     for thr in (0.5, 0.8):
-        ax.axhline(thr, color="grey", ls="--", lw=0.7)
-    ax.set_xlabel("total environment steps (millions) — every step counted, incl. skill training")
+        ax.axhline(thr, color="#999999", ls="--", lw=0.6)
+    ax.set_xlabel("total environment steps (millions), every step counted, incl. skill training")
     ax.set_ylabel("success rate on the full task")
     ax.set_ylim(-0.02, 1.02)
     ax.set_xlim(0, x[-1])
-    ax.set_title(f"Full-task success during training — mean across seeds, shading = min–max\n"
-                 f"(dotted lines: end of phase 1 for each B/C seed; size {CONFIG['size']} grid)", fontsize=10)
+    ax.set_title(f"Full-task success during training: mean across seeds, shading = min to max\n"
+                 f"(dotted vertical lines: end of phase 1 for each B/C seed; {CONFIG['env']['size']}x"
+                 f"{CONFIG['env']['size']} grid)", fontsize=10)
     ax.legend(loc="upper left", fontsize=8, frameon=False)
-    ax.grid(alpha=0.25)
+    ax.grid(alpha=0.2, lw=0.5)
+    for sp in ("top", "right"):
+        ax.spines[sp].set_visible(False)
     fig.tight_layout()
+    fig.subplots_adjust(right=0.82)
     fig.savefig(path, dpi=130)
     plt.close(fig)
 
@@ -207,9 +224,9 @@ def summary_text(ps, runs):
                      f"{('A' if other == 'A' else other)} median {np.median(y) / 1e6:.2f}M "
                      f"(reached {Y[col].notna().sum()}/{len(Y)}); one-sided Mann-Whitney (B faster) p = {p:.3f}"
                      f"   [not reached = {(total + BIN) / 1e6:.1f}M]")
-        u, p = mann_whitney_less([-v for v in Y.auc], [-v for v in X.auc])
+        u, p = mann_whitney_less([-v for v in X.auc], [-v for v in Y.auc])
         L.append(f"{label} AUC: B {X.auc.mean():.3f}, other {Y.auc.mean():.3f}; one-sided M-W (B higher) p = {p:.3f}")
-        u, p = mann_whitney_less([-v for v in Y.final_eval_success], [-v for v in X.final_eval_success])
+        u, p = mann_whitney_less([-v for v in X.final_eval_success], [-v for v in Y.final_eval_success])
         L.append(f"{label} final success: B {X.final_eval_success.mean():.3f}, other "
                  f"{Y.final_eval_success.mean():.3f}; one-sided M-W (B higher) p = {p:.3f}")
 
@@ -257,8 +274,11 @@ def summary_text(ps, runs):
             ct = G.groupby(["filter_at_end", "outcome"]).size().unstack(fill_value=0)
             L.append("    " + ct.to_string().replace("\n", "\n    "))
             deaths = G[G.outcome.isin(["lava", "ball"])]
+            if len(deaths) and cond == "C":
+                L.append(f"    (C's skill policy sees everything, so nothing is hidden from it. Same count, read as: "
+                         f"deaths to a hazard type the active sub-task never contained in training)")
             if len(deaths):
-                L.append(f"    deaths where the active filter was HIDING the thing that killed the agent: "
+                L.append(f"    deaths where the active filter hides the hazard type that killed the agent: "
                          f"{deaths.killer_hidden.sum()} / {len(deaths)} deaths "
                          f"({deaths.killer_hidden.mean():.1%}); "
                          f"= {deaths.killer_hidden.sum() / n_all:.1%} of all episodes")
