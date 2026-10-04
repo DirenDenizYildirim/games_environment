@@ -97,6 +97,26 @@
      200
     ]
    }
+  ],
+  "calib5": [
+   {
+    "size": 7,
+    "lava_frac": 0.04,
+    "max_steps_mult": 4,
+    "ego": 0,
+    "seeds": [
+     200
+    ]
+   },
+   {
+    "size": 7,
+    "lava_frac": 0.04,
+    "max_steps_mult": 10,
+    "ego": 0,
+    "seeds": [
+     202
+    ]
+   }
   ]
  },
  "calib_seeds": [

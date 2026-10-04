@@ -1,1 +1,3 @@
 calib4: 4 jobs, 4 workers
+[FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size11_s200
+[FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size9_s201
