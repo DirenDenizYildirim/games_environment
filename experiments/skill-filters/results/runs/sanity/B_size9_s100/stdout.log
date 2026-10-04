@@ -1,0 +1,1 @@
+/home/user/games_environment/experiments/skill-filters/results/runs/sanity/B_size9_s100: phase 1 ended at 2500608: {'navigate': 1.0, 'hazard': 0.7333333333333333, 'key_door': 1.0, 'phase1_end_step': 2500608, 'reached_target': False}

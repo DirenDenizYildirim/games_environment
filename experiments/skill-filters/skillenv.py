@@ -67,9 +67,10 @@ def apply_filter(obs, filt):
 
 class SkillFilterEnv(MiniGridEnv):
     def __init__(self, size=9, mode="full", subgoal_bonus=False, lava_frac=0.08, n_balls=None,
-                 max_steps=None, **kwargs):
+                 max_steps=None, ego=True, **kwargs):
         assert mode in ("full",) + SUBTASKS
         self.mode = mode
+        self.ego = ego  # agent-centred, rotated view of the whole map (see gen_obs)
         self.subgoal_bonus = subgoal_bonus  # condition D
         self.lava_frac = lava_frac
         self.n_balls = n_balls if n_balls is not None else (1 if size < 11 else 2)
@@ -227,7 +228,28 @@ class SkillFilterEnv(MiniGridEnv):
                     e = v.encode()
                     arr[i, j, 0], arr[i, j, 1] = e[0], e[2]
         arr[self.agent_pos[0], self.agent_pos[1]] = (AGENT, self.agent_dir)
+        if self.ego:
+            arr = self.egocentric(arr)
         return {"image": arr, "direction": self.agent_dir, "mission": self.mission}
+
+    def egocentric(self, arr):
+        """Re-centre the whole map on the agent and rotate it so the agent faces up.
+
+        Output is (V, V, 2) with V = 2*size - 3: big enough that every cell of the map is in
+        view from every position, so there is no partial observability. Cells outside the map
+        read as wall. The agent sits at (R, R) facing -y (up); the cell in front is (R, R-1).
+        """
+        R = self.width - 2
+        W, H = arr.shape[:2]
+        pad = np.zeros((W + 2 * R, H + 2 * R, 2), dtype=np.uint8)
+        pad[..., 0] = WALL
+        pad[R:R + W, R:R + H] = arr
+        ax, ay = self.agent_pos
+        crop = pad[ax:ax + 2 * R + 1, ay:ay + 2 * R + 1]
+        # rotate (x, y) axes so that the agent's facing direction points to -y
+        crop = np.rot90(crop, k=(3 - self.agent_dir) % 4, axes=(0, 1)).copy()
+        crop[R, R] = (AGENT, 0)
+        return crop
 
 
 def render_ascii(obs):

@@ -45,6 +45,7 @@ def parse_args(argv=None):
     p.add_argument("--size", type=int, default=9)
     p.add_argument("--lava-frac", type=float, default=0.08)
     p.add_argument("--max-steps-mult", type=int, default=4, help="episode limit = mult * size^2")
+    p.add_argument("--ego", type=int, default=1, help="1 = agent-centred rotated whole-map view, 0 = fixed map")
     p.add_argument("--total-steps", type=int, default=2_000_000)
     p.add_argument("--out", required=True)
     # PPO hyperparameters: identical for every condition and for both phases
@@ -167,11 +168,12 @@ class Run:
         os.makedirs(args.out, exist_ok=True)
         torch.manual_seed(args.seed)
         self.rng = np.random.default_rng(args.seed + 12345)
-        self.skill = Agent(args.size, N_ACTIONS)
+        self.obs_side = 2 * args.size - 3 if args.ego else args.size
+        self.skill = Agent(self.obs_side, N_ACTIONS)
         self.skill_opt = torch.optim.Adam(self.skill.parameters(), lr=args.lr, eps=1e-5)
         self.ctrl = self.ctrl_opt = None
         if self.cond in "BC":
-            self.ctrl = Agent(args.size, len(SUBTASKS))
+            self.ctrl = Agent(self.obs_side, len(SUBTASKS))
             self.ctrl_opt = torch.optim.Adam(self.ctrl.parameters(), lr=args.lr, eps=1e-5)
         self.global_step = 0
         self.update = 0
@@ -237,7 +239,8 @@ class Run:
         return envs, np.stack(obs)
 
     def env_kw(self):
-        return dict(lava_frac=self.args.lava_frac, max_steps=self.args.max_steps_mult * self.args.size ** 2)
+        return dict(lava_frac=self.args.lava_frac, max_steps=self.args.max_steps_mult * self.args.size ** 2,
+                    ego=bool(self.args.ego))
 
     def skill_input(self, obs, tasks):
         """Observation fed to the skill policy: masked by filter for B, raw for C/A/D."""
@@ -430,7 +433,7 @@ class Run:
         n_par = 25
         envs = [SkillFilterEnv(size=a.size, mode="full", **self.env_kw()) for _ in range(n_par)]
         next_ep = 0
-        obs = np.zeros((n_par, a.size, a.size, 2), dtype=np.uint8)
+        obs = np.zeros((n_par, self.obs_side, self.obs_side, 2), dtype=np.uint8)
         ep_id = [None] * n_par
         usage = [Counter() for _ in range(n_par)]
         cur_f = [0] * n_par

@@ -18,14 +18,15 @@ CONFIG = json.load(open(os.path.join(HERE, "config.json")))
 
 
 def env_args(v):
-    return ["--lava-frac", str(v["lava_frac"]), "--max-steps-mult", str(v["max_steps_mult"])]
+    return ["--lava-frac", str(v["lava_frac"]), "--max-steps-mult", str(v["max_steps_mult"]),
+            "--ego", str(v.get("ego", 1))]
 
 
 def jobs(batch):
     c = CONFIG
     if batch in c["calib"]:  # calibration rounds; each lists (size, lava_frac, max_steps_mult)
         return [("A", s, v["size"], c["total_steps"], env_args(v))
-                for v in c["calib"][batch] for s in c["calib_seeds"]]
+                for v in c["calib"][batch] for s in v.get("seeds", c["calib_seeds"])]
     if batch == "sanity":
         # phase 1 only: give it the full phase-1 allowance and stop right after
         return [("B", s, c["sanity_size"], c["total_steps"], ["--phase1-only", "1"] + env_args(c["sanity_env"]))

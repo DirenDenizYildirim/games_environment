@@ -1,3 +1,5 @@
 calib: 3 jobs, 3 workers
 [FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib/A_size11_s100
 [FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib/A_size9_s100
+[FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib/A_size7_s100
+calib: 0 ok, 3 failed

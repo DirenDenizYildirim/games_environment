@@ -1,1 +1,3 @@
 sanity: 1 jobs, 1 workers
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/sanity/B_size9_s100
+sanity: 1 ok, 0 failed

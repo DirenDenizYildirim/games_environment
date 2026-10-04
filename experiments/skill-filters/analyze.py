@@ -279,7 +279,11 @@ def summary_text(ps, runs):
 def analyze_calib():
     total = CONFIG["total_steps"]
     L = ["=== calibration: condition A only, success of training episodes ==="]
-    for r in load_runs("calib"):
+    for batch in CONFIG["calib"]:
+      L.append(f"--- {batch}: " + "; ".join(f"size {v['size']} lava {v['lava_frac']:.0%} max_steps {v['max_steps_mult']}*size^2 "
+                                           f"{'agent-centred' if v.get('ego', 1) else 'fixed-map'} view"
+                                           for v in CONFIG["calib"][batch]))
+      for r in load_runs(batch):
         if r["train"] is None:
             continue
         c = binned_curve(r["train"], total)
@@ -288,7 +292,7 @@ def analyze_calib():
         done = np.sum(~np.isnan(c))
         L.append(f"size {r['size']:>2} seed {r['seed']}: trained {r['train'].global_step.max() / 1e6:.2f}M, "
                  f"last-500k training success {np.nanmean(c[max(0, done - 5):done]):.3f}, "
-                 f"final eval success {fe:.3f}  " + ("(done)" if r["done"] else "(running)"))
+                 f"final eval success {fe:.3f}  " + ("(done)" if r["done"] else "(stopped early or running)"))
         L.append("    curve (per 500k): " + " ".join(f"{np.nanmean(c[i:i + 5]):.2f}" for i in range(0, done, 5)))
     for r in load_runs("sanity"):
         if r["train"] is None:
