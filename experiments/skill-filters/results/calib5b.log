@@ -1,1 +1,3 @@
 calib5: 2 jobs, 2 workers
+[FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib5/A_size7_s202
+calib5: 1 ok, 1 failed
