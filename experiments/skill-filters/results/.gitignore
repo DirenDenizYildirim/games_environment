@@ -1,3 +1,4 @@
 !runs/
 runs/**/ckpt.pt
 runs/**/ckpt.pt.tmp
+runs/**/running.lock

@@ -45,11 +45,25 @@ def run(job, batch):
     if os.path.exists(os.path.join(out, "final.json")):
         return out, 0
     os.makedirs(out, exist_ok=True)
+    # a lock so two runners started side by side never train the same run twice
+    lock = os.path.join(out, "running.lock")
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        try:
+            pid = int(open(lock).read().strip() or 0)
+            os.kill(pid, 0)
+            return out, 0  # another live runner has it
+        except (ValueError, ProcessLookupError, PermissionError):
+            os.remove(lock)  # stale lock from a dead runner
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    os.write(fd, str(os.getpid()).encode()); os.close(fd)
     cmd = [sys.executable, os.path.join(HERE, "ppo.py"), "--cond", cond, "--seed", str(seed),
            "--size", str(size), "--total-steps", str(steps), "--out", out,
            "--phase1-max-frac", str(CONFIG["phase1_max_frac"]), "--K", str(CONFIG["K"])] + extra
     with open(os.path.join(out, "stdout.log"), "a") as log:
         rc = subprocess.call(cmd, stdout=log, stderr=subprocess.STDOUT, cwd=HERE)
+    os.remove(lock)
     print(f"[{'ok' if rc == 0 else 'FAILED rc=%d' % rc}] {out}", flush=True)
     return out, rc
 

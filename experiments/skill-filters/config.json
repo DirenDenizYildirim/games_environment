@@ -1,6 +1,11 @@
 {
  "total_steps": 5000000,
- "env": null,
+ "env": {
+  "size": 7,
+  "lava_frac": 0.04,
+  "max_steps_mult": 10,
+  "ego": 1
+ },
  "calib": {
   "calib": [
    {

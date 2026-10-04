@@ -1,1 +1,3 @@
 calib3b: 1 jobs, 1 workers
+[FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib3b/A_size7_s100
+calib3b: 0 ok, 1 failed
