@@ -36,6 +36,11 @@ from skillenv import N_STATES, N_TYPES, SUBTASKS, SkillFilterEnv, apply_filter, 
 
 OUTCOMES = ("success", "lava", "ball", "timeout")
 N_ACTIONS = 7
+# every train.csv row has all of these columns (0 where not applicable), whatever the phase
+BASE_COLS = ["global_step", "update", "phase", "episodes", *OUTCOMES, "pg_loss", "v_loss", "entropy", "sps"]
+PHASE1_COLS = [f"sub_{t}_{k}" for t in SUBTASKS for k in ("n", "success")]
+PHASE2_COLS = [f"choose_{f}" for f in SUBTASKS] + [f"{oc}_under_{f}" for f in SUBTASKS for oc in OUTCOMES]
+ALL_COLS = BASE_COLS + PHASE1_COLS + PHASE2_COLS
 
 
 def parse_args(argv=None):
@@ -112,6 +117,25 @@ class Agent(nn.Module):
         if action is None:
             action = dist.sample()
         return action, dist.log_prob(action), dist.entropy(), self.critic(h).squeeze(-1)
+
+
+def read_train_csv(path):
+    """Read a train.csv as a list of dicts. Also reads files written before the fixed-column
+    fix, where B/C phase-2 rows (BASE_COLS + PHASE2_COLS) sat under a phase-1 header."""
+    with open(path) as f:
+        lines = list(csv.reader(f))
+    header, out = lines[0], []
+    for vals in lines[1:]:
+        if len(vals) == len(header):
+            cols = header
+        elif len(vals) == len(BASE_COLS) + len(PHASE2_COLS):
+            # old writer order: for each filter, choose_<f> then <outcome>_under_<f>
+            cols = BASE_COLS + [c for f in SUBTASKS
+                                for c in [f"choose_{f}"] + [f"{oc}_under_{f}" for oc in OUTCOMES]]
+        else:
+            raise ValueError(f"{path}: row with {len(vals)} fields")
+        out.append(dict(zip(cols, vals)))
+    return out
 
 
 def onehot(ids, n=len(SUBTASKS)):
@@ -199,13 +223,11 @@ class Run:
         torch.set_rng_state(ck["torch_rng"]); self.rng = ck["np_rng"]
         # drop curve rows written after the checkpoint
         if os.path.exists(self.csv_path):
-            with open(self.csv_path) as f:
-                rows = list(csv.DictReader(f))
+            rows = read_train_csv(self.csv_path)
             keep = [r for r in rows if int(r["global_step"]) <= self.global_step]
-            if rows:
-                with open(self.csv_path, "w", newline="") as f:
-                    w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
-                    w.writeheader(); w.writerows(keep)
+            with open(self.csv_path, "w", newline="") as f:
+                w = csv.DictWriter(f, fieldnames=ALL_COLS)
+                w.writeheader(); w.writerows({k: r.get(k, 0) for k in ALL_COLS} for r in keep)
         print(f"resumed {self.args.out} at step {self.global_step} (phase {self.phase})", flush=True)
 
     def save(self):
@@ -221,8 +243,9 @@ class Run:
 
     def log(self, row):
         new = not os.path.exists(self.csv_path)
+        row = {k: row.get(k, 0) for k in ALL_COLS}
         with open(self.csv_path, "a", newline="") as f:
-            w = csv.DictWriter(f, fieldnames=list(row.keys()))
+            w = csv.DictWriter(f, fieldnames=ALL_COLS)
             if new:
                 w.writeheader()
             w.writerow(row)

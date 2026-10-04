@@ -24,6 +24,12 @@ COND_NAME = {"A": "A  full view (baseline)", "B": "B  skill filters (the idea)",
              "C": "C  sub-tasks, no filtering", "D": "D  full view + sub-goal rewards"}
 
 
+def load_train(path):
+    from ppo import ALL_COLS, read_train_csv
+    df = pd.DataFrame(read_train_csv(path)).reindex(columns=ALL_COLS)
+    return df.apply(pd.to_numeric, errors="coerce").fillna(0)
+
+
 def load_runs(batch):
     runs = []
     for d in sorted(glob.glob(os.path.join(RES, "runs", batch, "*"))):
@@ -31,7 +37,7 @@ def load_runs(batch):
         cond, size, seed = name.split("_")
         r = dict(dir=d, name=name, cond=cond, size=int(size[4:]), seed=int(seed[1:]))
         tp = os.path.join(d, "train.csv")
-        r["train"] = pd.read_csv(tp) if os.path.exists(tp) else None
+        r["train"] = load_train(tp) if os.path.exists(tp) else None
         fe = os.path.join(d, "final_eval.csv")
         r["final"] = pd.read_csv(fe) if os.path.exists(fe) else None
         p1 = os.path.join(d, "phase1_eval.json")
