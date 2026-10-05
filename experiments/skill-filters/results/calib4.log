@@ -2,3 +2,5 @@ calib4: 4 jobs, 4 workers
 [FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size11_s200
 [FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size9_s201
 [FAILED rc=-15] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size9_s200
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/calib4/A_size7_s200
+calib4: 1 ok, 3 failed

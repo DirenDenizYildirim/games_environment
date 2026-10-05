@@ -1,1 +1,8 @@
 main: 20 jobs, 4 workers
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s0
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s0
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s0
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/D_size7_s0
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s1
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s1
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s1
