@@ -28,7 +28,7 @@ cd experiments/skill-filters
 or step by step:
 
 ```bash
-python sanity.py 9               # random policy + mask printouts -> results/sanity.txt
+python sanity.py                 # random policy + mask printouts -> results/sanity.txt
 python run_all.py calib4         # pick the grid size from the baseline only (+ calib5: fallback)
 python run_all.py sanity         # each sub-task learnable under its filter?
 python run_all.py main           # conditions A, B, C, D x 5 seeds
