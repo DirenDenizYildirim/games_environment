@@ -10,15 +10,19 @@ import collections
 import os
 import sys
 
+import json
+
 import numpy as np
 
 from skillenv import SUBTASKS, SkillFilterEnv, apply_filter, render_ascii
 
-size = int(sys.argv[1]) if len(sys.argv) > 1 else 9
-out = []
+ENV = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")))["env"]
+size = int(sys.argv[1]) if len(sys.argv) > 1 else ENV["size"]
+KW = dict(lava_frac=ENV["lava_frac"], max_steps=ENV["max_steps_mult"] * size * size, ego=bool(ENV["ego"]))
+out = [f"environment: size {size}, {KW}"]
 
 for mode in ("full",) + SUBTASKS:
-    env = SkillFilterEnv(size=size, mode=mode)
+    env = SkillFilterEnv(size=size, mode=mode, **KW)
     rng = np.random.default_rng(0)
     c = collections.Counter()
     n_ep = 2000
@@ -34,7 +38,7 @@ for mode in ("full",) + SUBTASKS:
 
 out.append("\nLegend: # wall, D locked door, d closed door, O open door, k key, o moving ball, "
            "~ lava, G goal, >v<^ agent")
-env = SkillFilterEnv(size=size, mode="full")
+env = SkillFilterEnv(size=size, mode="full", **KW)
 for seed in (3, 11):
     obs = env.reset(seed=seed)[0]["image"]
     out.append(f"\n=== layout seed {seed}: full observation, then each filter ===")
@@ -46,7 +50,7 @@ for seed in (3, 11):
 out.append("\n=== what each sub-task episode looks like (same layout seed 3, unfiltered) ===")
 blocks = []
 for mode in ("full",) + SUBTASKS:
-    e = SkillFilterEnv(size=size, mode=mode)
+    e = SkillFilterEnv(size=size, mode=mode, **KW)
     blocks.append([mode.ljust(size)] + render_ascii(e.reset(seed=3)[0]["image"]).split("\n"))
 for row in zip(*blocks):
     out.append("   ".join(r.ljust(size) for r in row))

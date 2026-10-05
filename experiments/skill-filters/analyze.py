@@ -169,7 +169,7 @@ def plot_curves(curves, per_seed, nb, path):
     ax.set_title(f"Full-task success during training: mean across seeds, shading = min to max\n"
                  f"(dotted vertical lines: end of phase 1 for each B/C seed; {CONFIG['env']['size']}x"
                  f"{CONFIG['env']['size']} grid)", fontsize=10)
-    ax.legend(loc="upper left", fontsize=8, frameon=False)
+    ax.legend(loc="center right", bbox_to_anchor=(1.0, 0.27), fontsize=8, frameon=False)
     ax.grid(alpha=0.2, lw=0.5)
     for sp in ("top", "right"):
         ax.spines[sp].set_visible(False)
@@ -306,6 +306,8 @@ def analyze_calib():
     total = CONFIG["total_steps"]
     L = ["=== calibration: condition A only, success of training episodes ==="]
     for batch in CONFIG["calib"]:
+      if not os.path.isdir(os.path.join(RES, "runs", batch)):
+          continue  # rounds 1-3 ran under the aliasing bug: results/invalid_aliasing_bug/
       L.append(f"--- {batch}: " + "; ".join(f"size {v['size']} lava {v['lava_frac']:.0%} max_steps {v['max_steps_mult']}*size^2 "
                                            f"{'agent-centred' if v.get('ego', 1) else 'fixed-map'} view"
                                            for v in CONFIG["calib"][batch]))

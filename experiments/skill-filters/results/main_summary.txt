@@ -1,0 +1,81 @@
+=== per-condition summary (n = number of seeds; comparison: between-condition, independent seeds) ===
+cond  n to 50% (per seed)                            to 80% (per seed)                              final eval success          AUC
+A     5 not reached, not reached, not reached, not reached, not reached not reached, not reached, not reached, not reached, not reached     0.002 ± 0.002   0.001 ± 0.000
+B     5 1.1M, 2.2M, 1.3M, 1.1M, 1.3M                 not reached, not reached, not reached, not reached, not reached     0.636 ± 0.039   0.504 ± 0.094
+C     5 1.2M, 1.2M, 1.2M, 1.7M, 1.0M                 not reached, not reached, not reached, not reached, not reached     0.634 ± 0.040   0.511 ± 0.030
+D     5 1.0M, 1.3M, 0.8M, 1.1M, 1.8M                 1.1M, 1.5M, 0.9M, 1.2M, 2.2M                     0.987 ± 0.012   0.760 ± 0.089
+
+final eval success per seed:
+  A: s0=0.000, s1=0.004, s2=0.000, s3=0.004, s4=0.000
+  B: s0=0.654, s1=0.582, s2=0.608, s3=0.668, s4=0.670
+  C: s0=0.648, s1=0.578, s2=0.616, s3=0.684, s4=0.644
+  D: s0=0.996, s1=0.994, s2=0.980, s3=0.996, s4=0.970
+
+=== verdict statistics (pre-registered in DECISIONS.md section 6) ===
+B vs A (primary) steps_to_50: B median 1.30M (reached 5/5), A median 5.10M (reached 0/5); one-sided Mann-Whitney (B faster) p = 0.004   [not reached = 5.1M]
+B vs A (primary) steps_to_80: B median 5.10M (reached 0/5), A median 5.10M (reached 0/5); one-sided Mann-Whitney (B faster) p = 1.000   [not reached = 5.1M]
+B vs A (primary) AUC: B 0.504, other 0.001; one-sided M-W (B higher) p = 0.004
+B vs A (primary) final success: B 0.636, other 0.002; one-sided M-W (B higher) p = 0.004
+B vs C (explanatory) steps_to_50: B median 1.30M (reached 5/5), C median 1.20M (reached 5/5); one-sided Mann-Whitney (B faster) p = 0.746   [not reached = 5.1M]
+B vs C (explanatory) steps_to_80: B median 5.10M (reached 0/5), C median 5.10M (reached 0/5); one-sided Mann-Whitney (B faster) p = 1.000   [not reached = 5.1M]
+B vs C (explanatory) AUC: B 0.504, other 0.511; one-sided M-W (B higher) p = 0.345
+B vs C (explanatory) final success: B 0.636, other 0.634; one-sided M-W (B higher) p = 0.421
+B vs D (explanatory) steps_to_50: B median 1.30M (reached 5/5), D median 1.10M (reached 5/5); one-sided Mann-Whitney (B faster) p = 0.873   [not reached = 5.1M]
+B vs D (explanatory) steps_to_80: B median 5.10M (reached 0/5), D median 1.20M (reached 5/5); one-sided Mann-Whitney (B faster) p = 1.000   [not reached = 5.1M]
+B vs D (explanatory) AUC: B 0.504, other 0.760; one-sided M-W (B higher) p = 1.000
+B vs D (explanatory) final success: B 0.636, other 0.987; one-sided M-W (B higher) p = 1.000
+
+=== phase 1 (B, C): skill policy alone on each sub-task, 300 eval episodes each ===
+  B s0: navigate 1.00, hazard 0.85, key_door 1.00   phase 1 ended at 0.90M steps
+  B s1: navigate 1.00, hazard 0.86, key_door 1.00   phase 1 ended at 1.76M steps
+  B s2: navigate 1.00, hazard 0.78, key_door 1.00   phase 1 ended at 1.06M steps
+  B s3: navigate 1.00, hazard 0.86, key_door 1.00   phase 1 ended at 0.85M steps
+  B s4: navigate 1.00, hazard 0.86, key_door 1.00   phase 1 ended at 1.06M steps
+  C s0: navigate 1.00, hazard 0.83, key_door 1.00   phase 1 ended at 1.16M steps
+  C s1: navigate 1.00, hazard 0.79, key_door 1.00   phase 1 ended at 1.19M steps
+  C s2: navigate 1.00, hazard 0.85, key_door 1.00   phase 1 ended at 1.12M steps
+  C s3: navigate 1.00, hazard 0.84, key_door 1.00   phase 1 ended at 1.67M steps
+  C s4: navigate 1.00, hazard 0.86, key_door 0.99   phase 1 ended at 0.95M steps
+
+=== final evaluation: outcomes (500 episodes per seed, pooled over seeds; per-seed numbers in results/main_failures.csv) ===
+outcome   ball   lava  success  timeout
+cond                                   
+A        0.001  0.166    0.002    0.832
+B        0.130  0.193    0.636    0.041
+C        0.089  0.134    0.634    0.144
+D        0.000  0.003    0.987    0.009
+
+failures (lava/ball/timeout) in B and C broken down by the filter active at the last step:
+  B: 909 failures out of 2500 episodes
+    outcome        ball  lava  timeout
+    filter_at_end                     
+    hazard           55    80      100
+    key_door        178   338        1
+    navigate         91    65        1
+    deaths where the active filter hides the hazard type that killed the agent: 672 / 807 deaths (83.3%); = 26.9% of all episodes
+    timeouts: had key 98%, had opened door 96%
+  C: 915 failures out of 2500 episodes
+    outcome        ball  lava  timeout
+    filter_at_end                     
+    hazard           54    92       34
+    key_door         31    85      160
+    navigate        137   157      165
+    (C's skill policy sees everything, so nothing is hidden from it. Same count, read as: deaths to a hazard type the active sub-task never contained in training)
+    deaths where the active filter hides the hazard type that killed the agent: 410 / 556 deaths (73.7%); = 16.4% of all episodes
+    timeouts: had key 48%, had opened door 23%
+  A timeouts: had key 38%, had opened door 3%
+  D timeouts: had key 65%, had opened door 65%
+
+controller filter usage during final evaluation (share of steps, mean over episodes):
+  B: navigate 8.3%, hazard 38.4%, key_door 53.3%
+     s0: navigate 1.0%, hazard 41.0%, key_door 57.9%
+     s1: navigate 2.0%, hazard 53.1%, key_door 45.0%
+     s2: navigate 9.6%, hazard 29.4%, key_door 61.0%
+     s3: navigate 15.0%, hazard 36.2%, key_door 48.8%
+     s4: navigate 13.9%, hazard 32.1%, key_door 54.0%
+  C: navigate 42.3%, hazard 24.9%, key_door 32.8%
+     s0: navigate 45.0%, hazard 52.3%, key_door 2.8%
+     s1: navigate 41.9%, hazard 43.2%, key_door 14.9%
+     s2: navigate 33.2%, hazard 0.4%, key_door 66.4%
+     s3: navigate 17.7%, hazard 28.1%, key_door 54.2%
+     s4: navigate 73.7%, hazard 0.6%, key_door 25.7%

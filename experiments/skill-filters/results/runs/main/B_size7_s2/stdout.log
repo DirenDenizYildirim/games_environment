@@ -1,0 +1,2 @@
+/home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s2: phase 1 ended at 1056768: {'navigate': 1.0, 'hazard': 0.7833333333333333, 'key_door': 1.0, 'phase1_end_step': 1056768, 'reached_target': True}
+/home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s2: done, final success 0.608

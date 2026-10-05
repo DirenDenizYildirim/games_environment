@@ -6,3 +6,17 @@ main: 20 jobs, 4 workers
 [ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s1
 [ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s1
 [ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s1
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/D_size7_s1
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s2
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s2
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s2
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/D_size7_s2
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s3
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s3
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s3
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/C_size7_s4
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/D_size7_s3
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/B_size7_s4
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/A_size7_s4
+[ok] /home/user/games_environment/experiments/skill-filters/results/runs/main/D_size7_s4
+main: 20 ok, 0 failed
